@@ -7,12 +7,12 @@ phases:
       - yum install -y docker
   pre_build:
     commands:
-      - echo "Checking Docker version..."
-      - docker --version
-      - echo "Checking AWS CLI version..."
-      - aws --version
+      - echo "Checking AWS credentials..."
+      - aws sts get-caller-identity # Debugging IAM role access
       - echo "Logging in to Amazon ECR..."
-      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com || exit 1
+      - export AWS_REGION="eu-west-1"
+      - export AWS_ACCOUNT_ID="099199746132"
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
       - IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - echo "Installing dependencies..."
       - npm install
