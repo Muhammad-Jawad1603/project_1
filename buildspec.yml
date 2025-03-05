@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: latest  # Not required, but useful for future extensions
+  build:
+    commands:
+      - echo "Building the static website..."
+  post_build:
+    commands:
+      - echo "Deploying to S3..."
+      - aws s3 sync . s3://demobucket1603  --delete
+      - aws s3 website s3://demobucket1603  --index-document index.html
+artifacts:
+  files:
+    - '**/*'  # Upload all files in the directory (e.g., index.html, CSS, JS)
