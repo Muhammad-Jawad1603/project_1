@@ -16,4 +16,4 @@ phases:
       - aws cloudfront create-invalidation --distribution-id E1T522PKWJNS9E --paths "/*"
 artifacts:
   files:
-    - '**/*'  # Upload all files in the directory (e.g., index.html, CSS, JS)
+    - '**/*'  #  Upload all files in the directory (e.g., index.html, CSS, JS)
