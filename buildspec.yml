@@ -13,7 +13,6 @@ phases:
       - export AWS_REGION="eu-west-1"
       - export AWS_ACCOUNT_ID="099199746132"
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-      - REPOSITORY URI-SAWS_ACCOUNT_ID.dkr.ecr.SAWS_DEFAULT_REGION.amazonaws.com/SIMAGE_REPO_NAME
       - IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - echo "Installing dependencies..."
       - npm install
