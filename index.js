@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
+    res.send('Code pipeline for node app');
     res.send('Hello, World_testing1603!');
 });
 
