@@ -32,14 +32,6 @@ phases:
       - echo "Writing image definition file..."
       - printf '[{"name":"node","imageUri":"%s"}]' $REPO_URI:latest > imagedefinitions.json
       - cat imagedefinitions.json
-      - echo "Triggering deployment to EC2 via CodeDeploy..."
-      - aws deploy create-deployment \
-          --application-name Demo-node \
-          --deployment-group-name Demo-node-deployment  \
-          --revision file://imagedefinitions.json \
-          --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --region $AWS_REGION
-
 artifacts:
   files:
     - imagedefinitions.json
