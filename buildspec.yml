@@ -33,8 +33,6 @@ phases:
       - docker push $REPO_URI:latest
       - echo "Writing image definition file..."
       - printf '[{"name":"hello-world-node","imageUri":"%s"}]' $REPO_URI:latest > imagedefinitions.json
-      - echo "Uploading new files to S3..."
-      - aws s3 sync ./your-local-folder s3://your-bucket-name/ --delete
       - cat imagedefinitions.json
 artifacts:
   files:
