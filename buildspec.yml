@@ -7,6 +7,8 @@ phases:
       - yum install -y docker jq # Added jq for parsing JSON if needed
   pre_build:
     commands:
+      - echo "Cleaning up old Docker images..."
+      - docker system prune -a -f
       - echo "Checking AWS credentials..."
       - aws sts get-caller-identity # Debugging IAM role access
       - echo "Logging in to Amazon ECR..."
@@ -31,6 +33,8 @@ phases:
       - docker push $REPO_URI:latest
       - echo "Writing image definition file..."
       - printf '[{"name":"hello-world-node","imageUri":"%s"}]' $REPO_URI:latest > imagedefinitions.json
+      - echo "Uploading new files to S3..."
+      - aws s3 sync ./your-local-folder s3://your-bucket-name/ --delete
       - cat imagedefinitions.json
 artifacts:
   files:
