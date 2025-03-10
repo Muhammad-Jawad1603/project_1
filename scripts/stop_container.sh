@@ -1,5 +1,5 @@
 #!/bin/bash
-CONTAINER_ID=$(docker ps -q --filter "name=demo-node-app")
+CONTAINER_ID=$(docker ps -q --filter "name=hello-world-node")
 if [ -n "$CONTAINER_ID" ]; then
   echo "Stopping running container..."
   docker stop $CONTAINER_ID

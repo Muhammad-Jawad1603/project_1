@@ -4,4 +4,4 @@ aws ecr get-login-password --region eu-west-1 | docker login --username AWS --pa
 IMAGE_URI=$(cat /home/ubuntu/deploy/imagedefinitions.json | jq -r '.[0].imageUri')
 
 echo "Running new container..."
-docker run -d --name demo-node-app -p 3000:3000 $IMAGE_URI
+docker run -d --name my-app -p 3000:3000 $IMAGE_URI

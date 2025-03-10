@@ -34,4 +34,6 @@ phases:
       - cat imagedefinitions.json
 artifacts:
   files:
+    - appspec.yml
+    - scripts/*.sh
     - imagedefinitions.json
