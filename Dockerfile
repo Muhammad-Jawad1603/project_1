@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:18
+FROM public.ecr.aws/docker/library/node:latest
 
 # Set the working directory inside the container
 WORKDIR /app
