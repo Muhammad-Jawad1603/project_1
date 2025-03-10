@@ -34,8 +34,8 @@ phases:
       - cat imagedefinitions.json
       - echo "Triggering deployment to EC2 via CodeDeploy..."
       - aws deploy create-deployment \
-          --application-name Demo-node-app \
-          --deployment-group-name Demo-deployment \
+          --application-name Demo-node \
+          --deployment-group-name Demo-node-deployment  \
           --revision file://imagedefinitions.json \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --region $AWS_REGION
