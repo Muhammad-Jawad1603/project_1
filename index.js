@@ -1,7 +1,11 @@
 const express = require('express');
 const app = express();
 
-app.get('/','/api', (req, res) => {
+app.get("/api", (req, res) => {
+    res.send('<h1>Node application</h1><br>Hello, World_testing786');
+  });
+
+app.get('/', (req, res) => {
     res.send('<h1>Node application</h1><br>Hello, World_testing0786!');
 });
 
