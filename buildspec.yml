@@ -1,10 +1,6 @@
 version: 0.2
 
 phases:
-  install:
-    commands:
-      - yum update -y
-      - yum install -y docker jq # Added jq for parsing JSON if needed
   pre_build:
     commands:
       - echo "Cleaning up old Docker images..."
@@ -23,19 +19,18 @@ phases:
       - npm install
   build:
     commands:
-      - echo "Building the Docker image..."
+      - echo Building Docker image...
       - docker build -t $REPO_URI:$IMAGE_TAG .
       - docker tag $REPO_URI:$IMAGE_TAG $REPO_URI:latest
+
   post_build:
     commands:
-      - echo "Pushing the Docker image to Amazon ECR..."
+      - echo Pushing Docker image to ECR...
       - docker push $REPO_URI:$IMAGE_TAG
       - docker push $REPO_URI:latest
-      - echo "Writing image definition file..."
-      - printf '[{"name":"hello-world-node","imageUri":"%s"}]' $REPO_URI:latest > imagedefinitions.json
-      - cat imagedefinitions.json
+      - echo Updating ECS service...
+      - aws ecs update-service --cluster Demo_cluster --service demo-node-Serv --force-new-deployment
+      - echo Deployment completed successfully!
+
 artifacts:
-  files:
-    - appspec.yml
-    - scripts/*.sh
-    - imagedefinitions.json
+  files: '**/*'
