@@ -13,7 +13,7 @@ phases:
       - aws s3 sync . s3://demobucket1603  --delete
       - aws s3 website s3://demobucket1603  --index-document index.html
       - echo "Invalidating CloudFront cache..."
-      - aws cloudfront create-invalidation --distribution-id E1T522PKWJNS9E --paths "/*"
+      - aws cloudfront create-invalidation --distribution-id EDQO2VNFYKWSK --paths "/*"
 artifacts:
   files:
     - '**/*'  #  Upload all files in the directory (e.g., index.html, CSS, JS)
