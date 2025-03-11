@@ -3,8 +3,6 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo "Cleaning up old Docker images..."
-      - docker system prune -a -f
       - echo "Checking AWS credentials..."
       - aws sts get-caller-identity # Debugging IAM role access
       - echo "Logging in to Amazon ECR..."
