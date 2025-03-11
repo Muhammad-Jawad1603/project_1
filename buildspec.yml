@@ -22,13 +22,14 @@ phases:
 
   post_build:
     commands:
-      - echo "Pushing Docker image to ECR..."
-      - docker push $REPO_URI:latest
-      - echo "Creating imagedefinitions.json..."
-      - echo '[{"name":"your-container-name","node":"'"$REPO_URI:latest"'"}]' > imagedefinitions.json
-      - echo "Updating ECS service..."
-      - aws ecs update-service --cluster Demo_cluster --service demo-node-Serv --force-new-deployment
-      - echo "Deployment completed successfully!"
+    - echo "Pushing Docker image to ECR..."
+    - docker push $REPO_URI:latest
+    - echo "Creating imagedefinitions.json..."
+    - echo '[{"name":"your-container-name","node":"'"$REPO_URI:latest"'"}]' > imagedefinitions.json
+    - cat imagedefinitions.json  # Debug: Print file contents to check correctness
+    - echo "Updating ECS service..."
+    - aws ecs update-service --cluster Demo_cluster --service demo-node-Serv --force-new-deployment
+    - echo "Deployment completed successfully!"
 
 artifacts:
   files:
