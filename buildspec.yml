@@ -1,10 +1,14 @@
 version: 0.2
 
 phases:
+  install:
+    commands:
+      - yum update -y
+      - yum install -y docker jq
   pre_build:
     commands:
       - echo "Checking AWS credentials..."
-      - aws sts get-caller-identity # Debugging IAM role access
+      - aws sts get-caller-identity  # Debugging IAM role access
       - echo "Logging in to Amazon ECR..."
       - export AWS_REGION="eu-west-1"
       - export AWS_ACCOUNT_ID="099199746132"
@@ -34,5 +38,6 @@ phases:
 
 artifacts:
   files:
+    - appspec.yml
+    - scripts/*.sh
     - imagedefinitions.json
-    - '**/*'
