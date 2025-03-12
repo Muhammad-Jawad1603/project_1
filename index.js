@@ -6,7 +6,7 @@ app.get("/api", (req, res) => {
   });
 
 app.get('/', (req, res) => {
-    res.send('<h1>Node application</h1><br>Hello, World_testing0786!');
+    res.send('<h1>Node application</h1>');
 });
 
 const PORT = 3000;
