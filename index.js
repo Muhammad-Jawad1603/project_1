@@ -2,11 +2,11 @@ const express = require('express');
 const app = express();
 
 app.get("/api", (req, res) => {
-    res.send('<h1>Node pplication</h1><br>Hello, World_testing786');
+    res.send('<h1>Node application</h1><br><p>THIS IS THE NEW PIPELINE</P>');
   });
 
 app.get('/', (req, res) => {
-    res.send('<h1>Node application</h1>');
+    res.send('<h1>Node application</h1><br><p>THIS IS THE NEW PIPELINE</P>');
 });
 
 const PORT = 3000;
