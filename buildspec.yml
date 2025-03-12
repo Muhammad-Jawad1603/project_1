@@ -8,7 +8,8 @@ phases:
       - echo "Logging in to Amazon ECR..."
       - export AWS_REGION="eu-west-1"
       - export AWS_ACCOUNT_ID="099199746132"
-      - export REPO_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/demo_repo"
+      - export REPO_NAME="demo_repo"
+      - export REPO_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME"
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPO_URI
       - echo "Installing dependencies..."
       - npm install
@@ -18,12 +19,14 @@ phases:
       - echo "Building Docker image..."
       - docker build -t $REPO_URI:latest .
       - echo "Tagging Docker image..."
-      - docker tag $REPO_URI:latest $REPO_URI:$(date +%Y%m%d%H%M%S)
+      - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+      - docker tag $REPO_URI:latest $REPO_URI:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo "Pushing Docker image to ECR..."
+      - echo "Pushing Docker images to ECR..."
       - docker push $REPO_URI:latest
+      - docker push $REPO_URI:$IMAGE_TAG
       - echo "Writing image definition file..."
       - printf '[{"name":"node","imageUri":"%s"}]' "$REPO_URI:latest" > imagedefinitions.json
       - cat imagedefinitions.json  # Debugging: Print the file content
@@ -32,3 +35,4 @@ phases:
 artifacts:
   files:
     - imagedefinitions.json
+    - '**/*'
