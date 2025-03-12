@@ -7,6 +7,9 @@ phases:
       - yum install -y docker jq
   pre_build:
     commands:
+      - echo "Ensuring scripts/ directory exists..."
+      - mkdir -p scripts
+      - touch scripts/dummy.sh  # Prevents CodeBuild from ignoring an empty directory
       - echo "Checking AWS credentials..."
       - aws sts get-caller-identity  # Debugging IAM role access
       - echo "Logging in to Amazon ECR..."
