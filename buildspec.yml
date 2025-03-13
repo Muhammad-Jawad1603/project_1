@@ -28,6 +28,12 @@ phases:
       - docker tag $REPO_URI:$IMAGE_TAG $REPO_URI:latest
   post_build:
     commands:
+      - chmod +x scripts/*.sh
+      - echo "Verifying required files..."
+      - ls -la
+      - ls -la scripts/
+      - echo "Listing all files before uploading artifacts..."
+      - ls -R
       - echo "Pushing the Docker image to Amazon ECR..."
       - docker push $REPO_URI:$IMAGE_TAG
       - docker push $REPO_URI:latest
@@ -36,6 +42,6 @@ phases:
       - cat imagedefinitions.json
 artifacts:
   files:
-    - appspec.yml
-    - scripts/*.sh
-    - imagedefinitions.json
+    - '**/appspec.yml'
+    - '**/scripts/*.sh'
+    - 'imagedefinitions.json'
