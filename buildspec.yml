@@ -52,6 +52,8 @@ phases:
 
 artifacts:
   files:
-    - '**/*'
+    - appspec.yml
+    - scripts/**  # Ensure it includes all scripts
+    - imagedefinitions.json
   base-directory: output
   discard-paths: no
