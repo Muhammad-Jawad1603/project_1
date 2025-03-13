@@ -34,8 +34,9 @@ phases:
       - ls -lah
       - ls -lah scripts/
       - echo "Listing all files before uploading artifacts..."
-      - ls -R
+      - find . -type f
       - zip -r debug_artifacts.zip appspec.yml scripts/ imagedefinitions.json
+      - unzip -l debug_artifacts.zip
       - echo "Pushing the Docker image to Amazon ECR..."
       - docker push $REPO_URI:$IMAGE_TAG
       - docker push $REPO_URI:latest
