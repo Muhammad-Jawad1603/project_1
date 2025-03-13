@@ -5,55 +5,51 @@ phases:
     commands:
       - yum update -y
       - yum install -y docker jq
-
   pre_build:
     commands:
-      - echo "🔍 Checking for deployment files..."
+      - echo "Checking deployment files..."
       - test -f appspec.yml && echo "✅ appspec.yml exists" || echo "❌ MISSING: appspec.yml"
       - test -d scripts && echo "✅ scripts/ exists" || echo "❌ MISSING: scripts/"
       - ls -lah scripts/
-      - echo "🔍 Checking AWS credentials..."
+      - echo "Checking AWS credentials..."
       - aws sts get-caller-identity
-      - echo "🔍 Logging in to Amazon ECR..."
+      - echo "Logging in to Amazon ECR..."
       - export AWS_REGION="eu-west-1"
       - export AWS_ACCOUNT_ID="099199746132"
       - export REPO_NAME="demo_repo"
       - export REPO_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME"
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPO_URI
-      - echo "🔍 Installing dependencies..."
+      - echo "Installing dependencies..."
       - npm install
 
   build:
     commands:
-      - echo "🚀 Building Docker image..."
+      - echo "Building Docker image..."
       - docker build -t $REPO_URI:latest .
-      - echo "🏷️ Tagging Docker image..."
+      - echo "Tagging Docker image..."
       - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
       - docker tag $REPO_URI:latest $REPO_URI:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo "📂 Checking build directory..."
-      - ls -lahR  
-      - echo "🚀 Pushing Docker images to ECR..."
+      - echo "Checking build directory..."
+      - ls -R  # Print entire directory structure
+      - echo "Pushing Docker images to ECR..."
       - docker push $REPO_URI:latest
       - docker push $REPO_URI:$IMAGE_TAG
-      - echo "📦 Preparing deployment artifacts..."
-      - mkdir -p output/scripts
-      - if [ -d scripts ]; then cp -r scripts/* output/scripts/; fi
+      - echo "Preparing deployment artifacts..."
+      - mkdir -p output
       - cp appspec.yml output/
+      - cp -r scripts output/  # Copy scripts properly
       - cp imagedefinitions.json output/
-      - echo "🧐 Checking output directory before upload..."
-      - ls -lahR output/
-      - echo "📝 Writing image definition file..."
-      - printf '[{"name":"node","imageUri":"%s"}]' "$REPO_URI:latest" > output/imagedefinitions.json
-      - cat output/imagedefinitions.json
-      - echo "✅ Build completed successfully!"
+      - echo "Verifying output directory..."
+      - ls -R output/
+      - echo "Build completed successfully!"
 
 artifacts:
   files:
     - appspec.yml
-    - scripts/**  
+    - scripts/**
     - imagedefinitions.json
-  base-directory: output
-  discard-paths: no
+  base-directory: output  # Ensures correct upload
+  discard-paths: no  
