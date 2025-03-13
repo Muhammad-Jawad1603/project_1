@@ -43,13 +43,14 @@ phases:
       - cp appspec.yml output/
       - cp -r scripts/* output/scripts/
       - printf '[{"name":"node","imageUri":"%s"}]' "$REPO_URI:latest" > output/imagedefinitions.json
-      - echo "✅ Verifying 'output/' directory contents..."
+      - echo "✅ Verifying 'output/' directory contents before artifact upload..."
       - ls -R output/
       - echo "🛠 Manually copying to S3 for debugging..."
       - aws s3 cp --recursive output/ s3://YOUR-S3-BUCKET-NAME/debug-output/
 
 artifacts:
   files:
-    - '**/*'
-  base-directory: output
+    - appspec.yml
+    - imagedefinitions.json
+    - scripts/**/*
   discard-paths: no
