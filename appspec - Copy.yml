@@ -1,0 +1,26 @@
+version: 0.0
+os: linux
+files:
+  - source: appspec.yml
+  - destination:/home/ubuntu/deploy/
+
+  - source: scripts/
+    destination: /home/ubuntu/deploy/scripts/
+
+  - source: imagedefinitions.json
+    destination: /home/ubuntu/deploy/
+    
+hooks:
+  BeforeInstall:
+    - location: scripts/fix_permissions.sh
+      timeout: 300
+      runas: ubuntu
+    
+    - location: scripts/stop_container.sh
+      timeout: 300
+      runas: ubuntu
+
+  AfterInstall:
+    - location: scripts/start_container.sh  # Assuming you start the container after installation
+      timeout: 300
+      runas: ubuntu
