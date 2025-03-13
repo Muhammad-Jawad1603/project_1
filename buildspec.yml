@@ -38,15 +38,19 @@ phases:
       - echo "Pushing Docker images to ECR..."
       - docker push $REPO_URI:latest
       - docker push $REPO_URI:$IMAGE_TAG
-      - echo "Writing image definition file..."
-      - printf '[{"name":"node","imageUri":"%s"}]' "$REPO_URI:latest" > imagedefinitions.json
-      - cat imagedefinitions.json
+      - echo "Copying deployment files to 'output/' for artifacts..."
+      - mkdir -p output
+      - cp appspec.yml output/
+      - cp -r scripts output/
+      - printf '[{"name":"node","imageUri":"%s"}]' "$REPO_URI:latest" > output/imagedefinitions.json
+      - echo "Verifying 'output/' directory contents..."
+      - ls -R output/
       - echo "Build completed successfully!"
 
 artifacts:
   files:
-    - appspec.yml       # ✅ Directly upload appspec.yml
-    - scripts/**        # ✅ Directly upload scripts folder
-    - imagedefinitions.json
-  discard-paths: no  
+    - '**/*'  
+  base-directory: output  
+  discard-paths: no
+
 
