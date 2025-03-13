@@ -8,7 +8,7 @@ phases:
 
   pre_build:
     commands:
-      - echo "🔍 Ensuring deployment files exist..."
+      - echo "🔍 Checking for deployment files..."
       - test -f appspec.yml && echo "✅ appspec.yml exists" || echo "❌ MISSING: appspec.yml"
       - test -d scripts && echo "✅ scripts/ exists" || echo "❌ MISSING: scripts/"
       - ls -lah scripts/
@@ -34,16 +34,16 @@ phases:
   post_build:
     commands:
       - echo "📂 Checking build directory..."
-      - ls -lahR  # Print entire directory structure
+      - ls -lahR  
       - echo "🚀 Pushing Docker images to ECR..."
       - docker push $REPO_URI:latest
       - docker push $REPO_URI:$IMAGE_TAG
-      - echo "📦 Copying deployment files for artifacts..."
-      - mkdir -p output
+      - echo "📦 Preparing deployment artifacts..."
+      - mkdir -p output/scripts
+      - if [ -d scripts ]; then cp -r scripts/* output/scripts/; fi
       - cp appspec.yml output/
-      - cp -r scripts output/
       - cp imagedefinitions.json output/
-      - echo "🔍 Verifying output directory contents..."
+      - echo "🧐 Checking output directory before upload..."
       - ls -lahR output/
       - echo "📝 Writing image definition file..."
       - printf '[{"name":"node","imageUri":"%s"}]' "$REPO_URI:latest" > output/imagedefinitions.json
@@ -53,7 +53,7 @@ phases:
 artifacts:
   files:
     - appspec.yml
-    - scripts/**  # Ensure it includes all scripts
+    - scripts/**  
     - imagedefinitions.json
   base-directory: output
   discard-paths: no
