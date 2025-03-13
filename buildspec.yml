@@ -31,13 +31,19 @@ phases:
 
   post_build:
     commands:
-      - echo "Pushing Docker images to ECR..."
-      - docker push $REPO_URI:latest
-      - docker push $REPO_URI:$IMAGE_TAG
-      - echo "Writing image definition file..."
-      - printf '[{"name":"node","imageUri":"%s"}]' "$REPO_URI:latest" > imagedefinitions.json
-      - cat imagedefinitions.json  # Debugging: Print the file content
-      - echo "Build completed successfully!"
+    - echo "Pushing Docker images to ECR..."
+    - docker push $REPO_URI:latest
+    - docker push $REPO_URI:$IMAGE_TAG
+    - echo "Listing project files..."
+    - find .  # Debugging: Show all files
+    - echo "Checking appspec.yml location..."
+    - ls -l appspec.yml
+    - echo "Checking scripts folder..."
+    - ls -l scripts/
+    - echo "Writing image definition file..."
+    - printf '[{"name":"node","imageUri":"%s"}]' "$REPO_URI:latest" > imagedefinitions.json
+    - cat imagedefinitions.json
+    - echo "Build completed successfully!"
 
 artifacts:
   files:
