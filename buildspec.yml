@@ -36,12 +36,11 @@ phases:
       - echo "Listing all files before uploading artifacts..."
       - ls -R
       - zip -r debug_artifacts.zip appspec.yml scripts/ imagedefinitions.json
-      - ls -lah debug_artifacts.zip
       - echo "Pushing the Docker image to Amazon ECR..."
       - docker push $REPO_URI:$IMAGE_TAG
       - docker push $REPO_URI:latest
       - echo "Writing image definition file..."
-      - printf '[{"name":"hello-world-node","imageUri":"%s"}]' $REPO_URI:latest > imagedefinitions.json
+      - printf '[{"name":"node","imageUri":"%s"}]' $REPO_URI:latest > imagedefinitions.json
       - cat imagedefinitions.json
 artifacts:
   files:
