@@ -1,0 +1,27 @@
+version: 0.0
+os: linux
+files:
+  - source: appspec.yml
+    destination: /home/ubuntu/deploy/
+
+  - source: scripts/  # Ensure the full folder is copied
+    destination: /home/ubuntu/deploy/scripts/
+    overwrite: yes
+
+  - source: imagedefinitions.json
+    destination: /home/ubuntu/deploy/
+    
+hooks:
+  BeforeInstall:
+    - location: scripts/fix_permissions.sh
+      timeout: 300
+      runas: ubuntu
+    
+    - location: scripts/stop_container.sh
+      timeout: 300
+      runas: ubuntu
+
+  AfterInstall:
+    - location: scripts/start_container.sh
+      timeout: 300
+      runas: ubuntu
