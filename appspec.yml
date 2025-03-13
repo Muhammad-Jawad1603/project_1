@@ -13,10 +13,6 @@ files:
     
 hooks:
   BeforeInstall:
-    - location: scripts/fix_permissions.sh
-      timeout: 300
-      runas: ubuntu
-    
     - location: scripts/stop_container.sh
       timeout: 300
       runas: ubuntu
