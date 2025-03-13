@@ -1,56 +1,41 @@
-version: 0.2
+on: 0.2
 
 phases:
   install:
     commands:
       - yum update -y
-      - yum install -y docker jq
-
+      - yum install -y docker jq # Added jq for parsing JSON if needed
   pre_build:
     commands:
-      - echo "🔍 Ensuring deployment files exist..."
-      - test -f appspec.yml && echo "✅ appspec.yml exists" || echo "❌ MISSING: appspec.yml"
-      - test -d scripts && echo "✅ scripts/ exists" || echo "❌ MISSING: scripts/"
-      - ls -lah scripts/
+      - echo "Cleaning up old Docker images..."
+      - docker system prune -a -f
       - echo "Checking AWS credentials..."
-      - aws sts get-caller-identity
-      - echo "🔐 Logging in to Amazon ECR..."
+      - aws sts get-caller-identity # Debugging IAM role access
+      - echo "Logging in to Amazon ECR..."
       - export AWS_REGION="eu-west-1"
       - export AWS_ACCOUNT_ID="099199746132"
-      - export REPO_NAME="demo_repo"
-      - export REPO_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME"
+      - export REPO_URI="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/demo_repo"
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPO_URI
-      - echo "📦 Installing dependencies..."
+      - echo "Verifying ECR login..."
+      - docker info
+      - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+      - echo "Installing dependencies..."
       - npm install
-
   build:
     commands:
-      - echo "🐳 Building Docker image..."
-      - docker build -t $REPO_URI:latest .
-      - echo "🏷 Tagging Docker image..."
-      - export IMAGE_TAG=$(date +%Y%m%d%H%M%S)
-      - docker tag $REPO_URI:latest $REPO_URI:$IMAGE_TAG
-
+      - echo "Building the Docker image..."
+      - docker build -t $REPO_URI:$IMAGE_TAG .
+      - docker tag $REPO_URI:$IMAGE_TAG $REPO_URI:latest
   post_build:
     commands:
-      - echo "🛠 Checking build directory..."
-      - ls -R
-      - echo "🚀 Pushing Docker images to ECR..."
-      - docker push $REPO_URI:latest
+      - echo "Pushing the Docker image to Amazon ECR..."
       - docker push $REPO_URI:$IMAGE_TAG
-      - echo "📂 Copying deployment files to 'output/' for artifacts..."
-      - mkdir -p output/scripts
-      - cp appspec.yml output/
-      - cp -r scripts/* output/scripts/
-      - printf '[{"name":"node","imageUri":"%s"}]' "$REPO_URI:latest" > output/imagedefinitions.json
-      - echo "✅ Verifying 'output/' directory contents before artifact upload..."
-      - ls -R output/
-      - echo "🛠 Manually copying to S3 for debugging..."
-      - aws s3 cp --recursive output/ s3://YOUR-S3-BUCKET-NAME/debug-output/
-
+      - docker push $REPO_URI:latest
+      - echo "Writing image definition file..."
+      - printf '[{"name":"hello-world-node","imageUri":"%s"}]' $REPO_URI:latest > imagedefinitions.json
+      - cat imagedefinitions.json
 artifacts:
   files:
     - appspec.yml
+    - scripts/*.sh
     - imagedefinitions.json
-    - scripts/**/*
-  discard-paths: no
