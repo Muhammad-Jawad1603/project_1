@@ -53,3 +53,4 @@ artifacts:
     - appspec.yml
     - scripts/*.sh
     - imagedefinitions.json
+      discard-paths: no
