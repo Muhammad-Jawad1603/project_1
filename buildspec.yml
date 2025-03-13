@@ -7,12 +7,10 @@ phases:
       - yum install -y docker jq
   pre_build:
     commands:
-      - echo "Ensuring scripts/ directory exists..."
-      - mkdir -p scripts
-      - touch scripts/dummy.sh 
-      - echo "Ensuring scripts/ directory exists..."
-      - mkdir -p scripts
-      - touch scripts/dummy.sh  # Prevents CodeBuild from ignoring an empty directory
+      - echo "Ensuring deployment files exist..."
+      - test -f appspec.yml && echo "✅ appspec.yml exists" || echo "❌ MISSING: appspec.yml"
+      - test -d scripts && echo "✅ scripts/ exists" || echo "❌ MISSING: scripts/"
+      - ls -lah scripts/
       - echo "Checking AWS credentials..."
       - aws sts get-caller-identity  # Debugging IAM role access
       - echo "Logging in to Amazon ECR..."
@@ -34,6 +32,8 @@ phases:
 
   post_build:
     commands:
+    - echo "Checking build directory..."
+    - ls -R  # Print entire directory structure
     - echo "Pushing Docker images to ECR..."
     - docker push $REPO_URI:latest
     - docker push $REPO_URI:$IMAGE_TAG
@@ -51,6 +51,7 @@ phases:
 artifacts:
   files:
     - appspec.yml
-    - scripts/**
+    - scripts/**  
     - imagedefinitions.json
+  base-directory: .  
   discard-paths: no  
