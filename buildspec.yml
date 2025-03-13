@@ -9,6 +9,9 @@ phases:
     commands:
       - echo "Ensuring scripts/ directory exists..."
       - mkdir -p scripts
+      - touch scripts/dummy.sh 
+      - echo "Ensuring scripts/ directory exists..."
+      - mkdir -p scripts
       - touch scripts/dummy.sh  # Prevents CodeBuild from ignoring an empty directory
       - echo "Checking AWS credentials..."
       - aws sts get-caller-identity  # Debugging IAM role access
@@ -34,12 +37,12 @@ phases:
     - echo "Pushing Docker images to ECR..."
     - docker push $REPO_URI:latest
     - docker push $REPO_URI:$IMAGE_TAG
-    - echo "Listing project files..."
-    - find .  # Debugging: Show all files
+    - echo "Checking directory contents before uploading artifacts..."
+    - find .  # Debugging: Print all files
     - echo "Checking appspec.yml location..."
-    - ls -l appspec.yml
+    - ls -l appspec.yml || echo "appspec.yml NOT FOUND!"
     - echo "Checking scripts folder..."
-    - ls -l scripts/
+    - ls -l scripts/ || echo "scripts folder NOT FOUND!"
     - echo "Writing image definition file..."
     - printf '[{"name":"node","imageUri":"%s"}]' "$REPO_URI:latest" > imagedefinitions.json
     - cat imagedefinitions.json
