@@ -1,10 +1,12 @@
 version: 0.0
 os: linux
 files:
+  - source: appspec.yml
+    destination: /home/ubuntu/deploy
   - source: image_uri.txt
     destination: /home/ubuntu/
   - source: scripts/
-    destination: /home/ubuntu/scripts/
+    destination: /home/ubuntu/scripts
 
 hooks:
   ApplicationStop:
@@ -15,6 +17,7 @@ hooks:
     - location: scripts/set_permissions.sh
       timeout: 300
       runas: ubuntu
+  ApplicationStart:
     - location: scripts/start_container.sh
       timeout: 300
       runas: ubuntu
