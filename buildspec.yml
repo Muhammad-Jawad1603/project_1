@@ -13,22 +13,24 @@ phases:
       - echo Building the Docker image...
       - docker build -t node .
       - echo "Tagging image as latest..."
-      - docker tag node:latest $REPO_URI:$IMAGE_TAG
-      - docker push $REPO_URI:$IMAGE_TAG
-      - echo "Writing image URI to file..."
-      - echo '[{"name":"node","imageUri":"'$REPO_URI:$IMAGE_TAG'"}]' > imagedefinitions.json
+      - docker tag node:latest 099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo:latest
+      - docker push 099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo:latest
+      - echo "Creating imagedefinitions.json..."
+      - echo '[{"name":"node","imageUri":"'"$REPO_URI:$IMAGE_TAG"'"}]' > imagedefinitions.json
 
   post_build:
     commands:
       - echo Checking Docker images...
       - docker images
-      - echo Uploading artifacts to S3...
-      - aws s3 cp imagedefinitions.json s3://demobucket1603/   # Ensures it gets uploaded
+      - echo Pushing Docker image to Amazon ECR...
+      - docker push $REPO_URI:$IMAGE_TAG
+      - echo Ensuring all files exist before upload...
+      - ls -la
+      - ls -R scripts/
 
 artifacts:
   files:
     - appspec.yml
     - imagedefinitions.json
-    - scripts/**    # This ensures the entire scripts folder is included
-  discard-paths: no
-
+    - scripts/**  # Ensures the entire scripts directory is included
+  discard-paths: no  # Ensures folder structure is retained
