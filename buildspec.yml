@@ -11,7 +11,10 @@ phases:
   build:
     commands:
       - echo Building the Docker image...
-      - docker build -t $REPO_URI:$IMAGE_TAG .
+      - docker build -t node .
+      - echo "Tagging image as latest..."
+      - docker tag node:latest 099199746132.dkr.ecr.eu-west-1.amazonaws.com/node:latest
+      - echo "099199746132.dkr.ecr.eu-west-1.amazonaws.com/node:latest" > image_uri.txt
   
   post_build:
     commands:
@@ -22,6 +25,7 @@ phases:
 
 artifacts:
   files:
-    - appspec.yml
-    - scripts/*.sh
     - image_uri.txt
+    - appspec.yml
+    - '**/*.sh'   # Ensures all shell scripts are included
+    - scripts/**  # Ensures the entire scripts directory is included
