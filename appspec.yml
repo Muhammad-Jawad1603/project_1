@@ -1,20 +1,24 @@
 version: 0.0
 os: linux
 files:
-  - source: appspec.yml
-    destination: /home/ubuntu/
-  - source: image_uri.txt
-    destination: /home/ubuntu/
-  - source: scripts/
-    destination: /home/ubuntu/scripts/
-
+  - source: /
+    destination: /home/ubuntu/deploy
+permissions:
+  - object: /home/ubuntu/deploy/scripts
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+    mode: 755
 hooks:
   BeforeInstall:
-  - location: scripts/start_container.sh
-    timeout: 300
-    runas: ubuntu
-  - location: scripts/stop_container.sh
-    timeout: 300
-    runas: ubuntu
-  - location: scripts/set_permissions.sh
-    timeout: 300
+    - location: scripts/set_permissions.sh
+      timeout: 300
+      runas: ubuntu
+  ApplicationStop:
+    - location: scripts/stop_container.sh
+      timeout: 300
+      runas: ubuntu
+  ApplicationStart:
+    - location: scripts/start_container.sh
+      timeout: 300
+      runas: ubuntu
