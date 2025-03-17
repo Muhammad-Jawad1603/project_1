@@ -1,6 +1,8 @@
 version: 0.0
 os: linux
 files:
+  - source: appspec.yml
+    destination: /home/ubuntu/
   - source: image_uri.txt
     destination: /home/ubuntu/
   - source: scripts/
