@@ -1,0 +1,17 @@
+version: 0.0
+os: linux
+files:
+  - source: image_uri.txt
+    destination: /home/ubuntu/
+  - source: scripts/
+    destination: /home/ubuntu/scripts/
+
+hooks:
+  ApplicationStop:
+    - location: /home/ubuntu/scripts/stop_container.sh
+      timeout: 300
+      runas: ubuntu
+  BeforeInstall:
+    - location: /home/ubuntu/scripts/start_container.sh
+      timeout: 300
+      runas: ubuntu
