@@ -3,7 +3,7 @@ os: linux
 files:
   - source: appspec.yml
     destination: /home/ubuntu/deploy
-  - source: image_uri.txt
+  - source: imagedefinitions.json
     destination: /home/ubuntu/
   - source: scripts/
     destination: /home/ubuntu/scripts
