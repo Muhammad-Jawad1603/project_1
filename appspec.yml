@@ -8,10 +8,10 @@ files:
 
 hooks:
   ApplicationStop:
-    - location: /home/ubuntu/scripts/stop_container.sh
+    - location: scripts/stop_container.sh  # Relative path inside the deployment archive
       timeout: 300
       runas: ubuntu
   BeforeInstall:
-    - location: /home/ubuntu/scripts/start_container.sh
+    - location: scripts/start_container.sh  # Relative path inside the deployment archive
       timeout: 300
       runas: ubuntu
