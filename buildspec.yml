@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo
+      - REPO_URI="099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo"
+      - IMAGE_TAG="latest"
+
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t $REPO_URI:$IMAGE_TAG .
+  
+  post_build:
+    commands:
+      - echo Pushing Docker image to Amazon ECR...
+      - docker push $REPO_URI:$IMAGE_TAG
+      - echo Writing image URI to file...
+      - echo $REPO_URI:$IMAGE_TAG > image_uri.txt
+
+artifacts:
+  files:
+    - appspec.yml
+    - scripts/*.sh
+    - image_uri.txt
