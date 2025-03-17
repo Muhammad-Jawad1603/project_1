@@ -1,24 +1,20 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /home/ubuntu/deploy
-permissions:
-  - object: /home/ubuntu/deploy/scripts
-    pattern: "**"
-    owner: ubuntu
-    group: ubuntu
-    mode: 755
+  - source: image_uri.txt
+    destination: /home/ubuntu/
+  - source: scripts/
+    destination: /home/ubuntu/scripts/
+
 hooks:
-  BeforeInstall:
-    - location: scripts/set_permissions.sh
-      timeout: 300
-      runas: ubuntu
   ApplicationStop:
     - location: scripts/stop_container.sh
       timeout: 300
       runas: ubuntu
-  ApplicationStart:
+  BeforeInstall:
+    - location: scripts/set_permissions.sh
+      timeout: 300
+      runas: ubuntu
     - location: scripts/start_container.sh
       timeout: 300
       runas: ubuntu
