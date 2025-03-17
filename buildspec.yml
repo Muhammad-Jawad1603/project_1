@@ -29,7 +29,6 @@ phases:
 
 artifacts:
   files:
-    - image_uri.txt
     - appspec.yml
-    - '**/*.sh'   # Ensures all shell scripts are included
-    - scripts/**  # Ensures the entire scripts directory is included
+    - scripts/**
+  name: Demo.zip
