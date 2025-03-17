@@ -27,6 +27,5 @@ artifacts:
   files:
     - imagedefinitions.json
     - appspec.yml
-    - '**/*.sh'   # Ensures all shell scripts are included
-    - scripts/**  # Ensures the entire scripts directory is included
+    - scripts/**
   discard-paths: no
