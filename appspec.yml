@@ -7,11 +7,12 @@ files:
     destination: /home/ubuntu/scripts/
 
 hooks:
-  ApplicationStop:
-    - location: scripts/stop_container.sh  # Relative path inside the deployment archive
-      timeout: 300
-      runas: ubuntu
   BeforeInstall:
-    - location: scripts/start_container.sh  # Relative path inside the deployment archive
-      timeout: 300
-      runas: ubuntu
+  - location: scripts/start_container.sh
+    timeout: 300
+    runas: ubuntu
+  - location: scripts/stop_container.sh
+    timeout: 300
+    runas: ubuntu
+  - location: scripts/set_permissions.sh
+    timeout: 300
