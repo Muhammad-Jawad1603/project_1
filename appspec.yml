@@ -9,6 +9,10 @@ files:
     destination: /home/ubuntu/scripts
 
 hooks:
+  BeforeInstall:
+    - location: scripts/set_permissions.sh
+      timeout: 300
+      runas: ubuntu
   ApplicationStop:
     - location: scripts/stop_container.sh
       timeout: 300
