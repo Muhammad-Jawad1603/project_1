@@ -5,19 +5,23 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo
-      - REPO_URI="099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo"
-      - IMAGE_TAG="latest"
+      - export REPO_URI="099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo"
+      - export IMAGE_TAG="latest"
+
 
   build:
     commands:
       - echo Building the Docker image...
       - docker build -t node .
       - echo "Tagging image as latest..."
-      - docker tag node:latest 099199746132.dkr.ecr.eu-west-1.amazonaws.com/node:latest
+      - docker tag node:latest 099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo:latest
+      - docker push 099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo:latest
       - echo "099199746132.dkr.ecr.eu-west-1.amazonaws.com/node:latest" > image_uri.txt
   
   post_build:
     commands:
+      - echo Checking Docker images...
+      - docker images
       - echo Pushing Docker image to Amazon ECR...
       - docker push $REPO_URI:$IMAGE_TAG
       - echo Writing image URI to file...
