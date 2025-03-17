@@ -13,10 +13,6 @@ hooks:
     - location: scripts/stop_container.sh
       timeout: 300
       runas: ubuntu
-  BeforeInstall:
-    - location: scripts/set_permissions.sh
-      timeout: 300
-      runas: ubuntu
   ApplicationStart:
     - location: scripts/start_container.sh
       timeout: 300
