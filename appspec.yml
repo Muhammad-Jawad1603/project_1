@@ -6,18 +6,19 @@ files:
   - source: imagedefinitions.json
     destination: /home/ubuntu/
   - source: scripts/
-    destination: /home/ubuntu/scripts
+    destination: /home/ubuntu/scripts/
 
 hooks:
-  BeforeInstall:
-    - location: scripts/set_permissions.sh
-      timeout: 300
-      runas: ubuntu
   ApplicationStop:
     - location: scripts/stop_container.sh
+      timeout: 300
+      runas: ubuntu
+  BeforeInstall:
+    - location: scripts/set_permissions.sh
       timeout: 300
       runas: ubuntu
   ApplicationStart:
     - location: scripts/start_container.sh
       timeout: 300
       runas: ubuntu
+
