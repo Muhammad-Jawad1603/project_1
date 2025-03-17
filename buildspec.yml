@@ -25,7 +25,8 @@ phases:
 
 artifacts:
   files:
-    - imagedefinitions.json
-    - appspec.yml
     - scripts/**
+    - appspec.yml
+    - image_uri.txt
   discard-paths: no
+
