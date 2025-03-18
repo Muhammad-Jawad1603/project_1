@@ -11,10 +11,10 @@ hooks:
     - location: scripts/cleanup.sh
       timeout: 300
       runas: ubuntu
-  ApplicationStop:
-    - location: scripts/stop_container.sh
-      timeout: 300
-      runas: ubuntu
+#  ApplicationStop:
+#    - location: scripts/stop_container.sh
+#      timeout: 300
+#      runas: ubuntu
   ApplicationStart:
     - location: scripts/start_container.sh
       timeout: 300
