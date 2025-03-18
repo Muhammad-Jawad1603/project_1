@@ -8,16 +8,23 @@ files:
   - source: scripts/
     destination: /home/ubuntu/scripts/
 
+permissions:
+  - object: /home/ubuntu/scripts/
+    owner: ubuntu
+    group: ubuntu
+    mode: 755
+
 hooks:
   BeforeInstall:
-    - location: scripts/cleanup.sh
+    - location: /home/ubuntu/scripts/cleanup.sh
       timeout: 300
       runas: ubuntu
   ApplicationStop:
-    - location: scripts/stop_container.sh
+    - location: /home/ubuntu/scripts/stop_container.sh
       timeout: 300
       runas: ubuntu
   ApplicationStart:
-    - location: scripts/start_container.sh
+    - location: /home/ubuntu/scripts/start_container.sh
       timeout: 300
       runas: ubuntu
+
