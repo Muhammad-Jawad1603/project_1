@@ -1,10 +1,19 @@
 #!/bin/bash
-set -e
 
-sudo rm -rf /home/ubuntu/node-app/*
+APP_DIR="/home/ubuntu/node-app"
+TEMP_DIR="/home/ubuntu/temp"
+
+echo "Removing old application files..."
+sudo rm -rf ${APP_DIR:?}/*  # Prevent accidental removal of /home/ubuntu if APP_DIR is empty
+
 echo "Moving new files to application directory..."
-sudo mv /home/ubuntu/temp/* /home/ubuntu/node-app
+shopt -s dotglob  # Ensure hidden files are included
+sudo mv ${TEMP_DIR}/* ${APP_DIR}/
 
 echo "Deployment files moved successfully."
 
-sudo rm -rf /home/ubuntu/temp/*
+echo "Cleaning up temporary files..."
+sudo rm -rf ${TEMP_DIR:?}/*
+
+echo "Cleanup completed successfully."
+
