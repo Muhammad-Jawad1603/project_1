@@ -1,18 +1,20 @@
 version: 0.0
 os: linux
 files:
+  - source: appspec.yml
+    destination: /home/ubuntu/deploy
   - source: imagedefinitions.json
     destination: /home/ubuntu/
   - source: scripts/
     destination: /home/ubuntu/scripts/
 
 hooks:
-  ApplicationStop:
-    - location: scripts/stop_container.sh
-      timeout: 300
-      runas: ubuntu
   BeforeInstall:
     - location: scripts/cleanup.sh
+      timeout: 300
+      runas: ubuntu
+  ApplicationStop:
+    - location: scripts/stop_container.sh
       timeout: 300
       runas: ubuntu
   ApplicationStart:
