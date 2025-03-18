@@ -1,12 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: appspec.yml
-    destination: /home/ubuntu/deploy
-  - source: imagedefinitions.json
+  - source: /
     destination: /home/ubuntu/
-  - source: scripts/
-    destination: /home/ubuntu/scripts/
 
 permissions:
   - object: /home/ubuntu/scripts/

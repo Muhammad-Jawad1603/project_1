@@ -1,8 +1,9 @@
 #!/bin/bash
 
+aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo
 echo "Starting new container..."
-IMAGE_URI=$(cat /home/ubuntu/image_uri.txt)
+IMAGE_URI=$(cat /home/ubuntu/image_uri.tx)
 
-sudo docker pull $IMAGE_URI
-sudo docker run -d --name node -p 3000:3000 $IMAGE_URI
+sudo docker pull 099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo:latest
+sudo docker run -d --name node -p 3000:3000 099199746132.dkr.ecr.eu-west-1.amazonaws.com/demo_repo:latest
 sudo chmod +x /home/ubuntu/scripts/*.sh
