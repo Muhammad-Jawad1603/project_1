@@ -5,21 +5,20 @@ files:
     destination: /home/ubuntu/
 
 permissions:
-  - object: /home/ubuntu/scripts/
-    owner: ubuntu
-    group: ubuntu
+  - object: scripts/
     mode: 755
 
 hooks:
   BeforeInstall:
-    - location: /home/ubuntu/scripts/cleanup.sh
+    - location: scripts/cleanup.sh
       timeout: 300
       runas: ubuntu
   ApplicationStop:
-    - location: /home/ubuntu/scripts/stop_container.sh  # Changed to absolute path
+    - location: scripts/stop_container.sh
       timeout: 300
       runas: ubuntu
   ApplicationStart:
-    - location: /home/ubuntu/scripts/start_container.sh  # Changed to absolute path
+    - location: scripts/start_container.sh
       timeout: 300
       runas: ubuntu
+
