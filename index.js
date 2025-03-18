@@ -6,7 +6,7 @@ app.get('/api2', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('<h1>Node application on EC2</h1><br><p>THIS IS THE NEW PIPELINE7860</P>');
+    res.send('<h1>Node application on EC2</h1><br><p>THIS IS THE NEW PIPELINE1603</P>');
 });
 
 const PORT = 3000;
