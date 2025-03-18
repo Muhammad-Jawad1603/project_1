@@ -2,11 +2,14 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/temp
+    destination: /home/ubuntu/temp/
 
 permissions:
-  - object: scripts/
+  - object: /home/ubuntu/temp/scripts/
+    pattern: "*.sh"
     mode: 755
+    owner: ubuntu
+    group: ubuntu
 
 hooks:
   BeforeInstall:
@@ -21,4 +24,3 @@ hooks:
     - location: scripts/start_container.sh
       timeout: 300
       runas: ubuntu
-
