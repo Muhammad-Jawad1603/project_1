@@ -20,11 +20,10 @@ hooks:
       timeout: 300
       runas: ubuntu
   ApplicationStop:
-    - location: /home/ubuntu/scripts/stop_container.sh
+    - location: /home/ubuntu/scripts/stop_container.sh  # Changed to absolute path
       timeout: 300
       runas: ubuntu
   ApplicationStart:
-    - location: /home/ubuntu/scripts/start_container.sh
+    - location: /home/ubuntu/scripts/start_container.sh  # Changed to absolute path
       timeout: 300
       runas: ubuntu
-
