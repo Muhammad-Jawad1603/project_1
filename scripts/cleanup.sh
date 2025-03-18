@@ -1,4 +1,10 @@
 #!/bin/bash
-echo "Removing old imagedefinitions.json..."
-rm -f /home/ubuntu/imagedefinitions.json
-rm -f /home/ubuntu/appspec.yml
+set -e
+
+sudo rm -rf /home/ubuntu/node-app/
+echo "Moving new files to application directory..."
+sudo mv /home/ubuntu/temp /home/ubuntu/node-app
+
+echo "Deployment files moved successfully."
+
+sudo rm -rf /home/ubuntu/temp/
