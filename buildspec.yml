@@ -30,7 +30,7 @@ phases:
 
 artifacts:
   files:
-    - imagedefinitions.json
     - appspec.yml
-    - scripts/** # Ensures the entire scripts directory is included
+    - imagedefinitions.json
+    - 'scripts/*'  # Ensures the entire scripts directory is included
   discard-paths: no  # Ensures folder structure is retained
