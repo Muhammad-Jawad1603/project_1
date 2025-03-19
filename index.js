@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get("/api", (req, res) => {
-    res.send('<h1>Node application</h1><br><p>THIS IS THE NEW PIPELINE1603</P><br><p>THIS IS A NEW PIPELINE!</p>');
+    res.send('<h1>Node application</h1><br><p>THIS IS THE NEW PIPELINE1603 FROM ECS</P><br><p>THIS IS A NEW PIPELINE!</p>');
   });
 
 app.get('/', (req, res) => {
